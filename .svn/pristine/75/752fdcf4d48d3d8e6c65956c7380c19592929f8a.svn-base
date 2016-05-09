@@ -1,0 +1,53 @@
+package model;
+
+import java.awt.Shape;
+import java.awt.geom.RectangularShape;
+
+public abstract class Rectangular extends AbstractTool{
+
+    private RectangularShape myRectangularShape;
+    
+    private int myStartX;
+
+    private int myStartY;
+    
+    private int myOriginalX;
+    
+    private int myOriginalY;
+    
+    public Rectangular(final RectangularShape theRectangularShape) {
+        myRectangularShape = theRectangularShape;
+    }
+
+    @Override
+    public Shape getShape() {
+        
+        return myRectangularShape;
+    }
+
+    @Override
+    public Shape startingPoint(final int theStartX, final int theStartY) {
+        //System.out.println("Rect");
+        myStartX = theStartX;
+        myStartY = theStartY;
+        
+        myRectangularShape = (RectangularShape) myRectangularShape.clone();
+        myRectangularShape.setFrameFromDiagonal(myStartX, myStartY, theStartX, theStartY);
+        
+        return myRectangularShape;
+    }
+
+    @Override
+    public Shape endingPoint(final int theStartX, final int theStartY) {
+       
+        myRectangularShape.setFrameFromDiagonal(myStartX, myStartY, theStartX, theStartY);
+        
+        return myRectangularShape;
+    }
+    
+    public Shape finalPoint(final int theEndX, final int theEndY) {
+        myRectangularShape.setFrameFromDiagonal(myStartX, myStartY, theEndX, theEndY);
+        return (Shape) myRectangularShape.clone();
+    }
+
+}

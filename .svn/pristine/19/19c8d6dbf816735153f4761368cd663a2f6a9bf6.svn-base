@@ -1,0 +1,181 @@
+//package view;
+//
+//import java.awt.event.ActionEvent;
+//import java.awt.event.ActionListener;
+//import java.awt.event.KeyEvent;
+//
+//import javax.swing.AbstractAction;
+//import javax.swing.ButtonGroup;
+//import javax.swing.ImageIcon;
+//import javax.swing.JCheckBoxMenuItem;
+//import javax.swing.JFrame;
+//import javax.swing.JMenu;
+//import javax.swing.JMenuBar;
+//import javax.swing.JMenuItem;
+//import javax.swing.JOptionPane;
+//import javax.swing.JRadioButtonMenuItem;
+//import javax.swing.JSlider;
+//import javax.swing.JToggleButton;
+//import javax.swing.JToolBar;
+//import javax.swing.event.ChangeEvent;
+//import javax.swing.event.ChangeListener;
+//
+//import listeners.ColorChooserListener;
+//import listeners.ToolsAction;
+//
+//public class MenuBarClass extends JMenuBar{
+//
+//    public MenuBarClass(final JFrame myFrame) {
+//        
+//    }
+//    
+//    private JMenuBar createMenuBar() {
+//        //final JMenuBar menuBar = new JMenuBar();
+//        final MenuBarClass menuBar = new MenuBarClass();
+//        final JMenu fileMenu = createFileMenu();
+//
+//        final JMenu optionMenu = createOptionsMenu();
+//
+//        final JMenu toolsMenu = createToolsMenu();
+//        final JMenu helpMenu = new JMenu("Help");
+//        helpMenu.add(new AbstractAction("About...") {
+//
+//            @Override
+//            public void actionPerformed(final ActionEvent theEvent) {
+//                JOptionPane.showMessageDialog(null, "Nwoke Fortune Chiemeziem\n"
+//                                                + "Power Paint project TCSS 305 winter 2015",
+//                                                "About", JOptionPane.INFORMATION_MESSAGE,
+//                                               new ImageIcon("./images/paintbrush_small.jpg"));
+//            }
+//            
+//        });
+//        
+//        final JMenuItem colorMenu = createColorMenuItem();
+//
+//        menuBar.add(fileMenu);
+//        menuBar.add(optionMenu);
+//        menuBar.add(toolsMenu);
+//        menuBar.add(helpMenu);
+//        menuBar.add(colorMenu);
+//
+//        return menuBar;
+//    }
+//    
+//    private JMenuItem createColorMenuItem() {
+//        final JMenuItem colorMenuItem = new JMenuItem("Color...");
+//        
+//        colorMenuItem.addActionListener(new ColorChooserListener(myPanel));
+//       return colorMenuItem;
+//    }
+//
+//    /**
+//     * 
+//     * @return
+//     */
+//    private JMenu createToolsMenu() {
+//        final JMenu tools = new JMenu("Tools");
+//        tools.setMnemonic('T');
+//        final ButtonGroup buttonGroup = new ButtonGroup();
+//
+//        for (final ToolsAction actions : myToolsActions) {
+//            final JRadioButtonMenuItem button = new JRadioButtonMenuItem(actions);
+//            buttonGroup.add(button);
+//            tools.add(button);
+//        }
+//        return tools;
+//    }
+//
+//    /**
+//     * 
+//     * @return
+//     */
+//    private JMenu createFileMenu() {
+//        final JMenu file = new JMenu("File");
+//        file.setMnemonic('F');
+//        //myClearAction.setEnabled(false);
+////        if (myPanel.getComponentCount() == 0) {
+////            myClearAction.setEnabled(false);
+////        }
+////
+////        else {
+////            myClearAction.setEnabled(false);
+////        }
+//        
+//       
+//        file.add(myClearAction);
+//
+//        file.addSeparator();
+//
+//        file.add(new AbstractAction("Exit") {
+//            @Override
+//            public void actionPerformed(final ActionEvent theEvent) {
+//                myFrame.dispose();
+//            }
+//
+//        });
+//
+//        return file;
+//    }
+//
+//    private JMenu createOptionsMenu() {
+//
+//        final JMenu options = new JMenu("Options");
+//
+//        final JMenu thicknessOption = new JMenu("Thickness");
+//        
+//        final JCheckBoxMenuItem checkbox = new JCheckBoxMenuItem("Grid");
+//        checkbox.setMnemonic(KeyEvent.VK_G);
+//        checkbox.addActionListener(new ActionListener()
+//        {
+//            public void actionPerformed(final ActionEvent theEvent) {
+//                myPanel.setGridSelected(checkbox.isSelected());
+//                myPanel.repaint();
+//            }
+//        });
+//        
+//        //options_menu.add(grid_checkbox);
+//
+//        options.add(checkbox);
+//        myThicknessSlider = createSlider();
+//        
+//        myThicknessSlider.addChangeListener(new ChangeListener() {
+//            /** Called in response to slider events in this window. */
+//            public void stateChanged(final ChangeEvent theEvent) {
+//                final float value = myThicknessSlider.getValue();
+//                myPanel.setThickness(value);
+//                myPanel.repaint();
+//            }
+//        });
+//
+//        thicknessOption.add(myThicknessSlider);
+//        options.add(thicknessOption);
+//
+//        return options;
+//    }
+//
+//    private JSlider createSlider() {
+//        final JSlider slider = new JSlider(0, 20, 1);
+//
+//        slider.setMajorTickSpacing(MAJOR_TICK_SPACING);
+//        slider.setMinorTickSpacing(MINOR_TICK_SPACING);
+//
+//        slider.setPaintTicks(true);
+//        slider.setPaintLabels(true);
+//
+//        return slider;
+//    }
+//
+//    private JToolBar createToolBar() {
+//        JToolBar toolBar = new JToolBar();
+//
+//        final ButtonGroup buttonGroup = new ButtonGroup();
+//        for (final ToolsAction actions : myToolsActions) {
+//            final JToggleButton button = new JToggleButton(actions);
+//
+//            buttonGroup.add(button);
+//            toolBar.add(button);
+//        }
+//        return toolBar;
+//    }
+//
+//}

@@ -1,0 +1,17 @@
+package model;
+
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
+
+public class EllipseTool extends Rectangular{
+    
+    public EllipseTool() {
+        super(new  Ellipse2D.Double());       
+    }
+    
+    public String toString() {
+        return "Ellipse";
+    }
+
+}

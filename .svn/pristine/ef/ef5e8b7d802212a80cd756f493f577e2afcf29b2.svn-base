@@ -1,0 +1,54 @@
+package model;
+
+import java.awt.Shape;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Path2D;
+
+public class PencilTool extends AbstractTool{
+
+    private Path2D myPath;
+    
+    /** The starting X of the path.*/
+    private int myStartX;
+
+    /**The starting Y of the path.*/
+    private int myStartY;
+    
+    /**
+     * This is my pencil tool.
+     */
+    public PencilTool() {
+        
+        myPath = new Path2D.Double();
+    }
+
+    @Override
+    public Shape getShape() {
+        // TODO Auto-generated method stub
+        return myPath;
+    }
+
+    @Override
+    public Shape startingPoint(final int theStartX, final int theStartY) {
+        
+        if (myPath.getCurrentPoint() == null) {
+            myPath.moveTo(theStartX, theStartY);
+        } 
+        return myPath;
+    }
+
+    @Override
+    public Shape endingPoint(final int theEndX, final int theEndY) {
+        myPath.lineTo(theEndX, theEndY);
+        return myPath;
+    }
+    
+    public Shape finalPoint(final int theEndX, final int theEndY) {
+        myPath.lineTo(theEndX, theEndY);
+        return (Shape) myPath.clone();
+    }
+    
+    public String toString() {
+        return "Pencil";
+    }
+}

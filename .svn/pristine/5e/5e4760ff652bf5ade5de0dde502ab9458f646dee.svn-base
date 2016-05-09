@@ -1,0 +1,28 @@
+/*
+ * Nwoke Fortune Chiemeziem
+ * Winter 2015.
+ */
+package view;
+
+/**
+ * This is my utility class.
+ * @author n4tunec@uw.edu.
+ * @version winter 2015.
+ *
+ */
+public final class PowerPaintMain {
+
+    /**Unusable constructor. */
+    private PowerPaintMain() {
+      
+    }
+    /**
+     * The main method kick starts the GUI.
+     * @param theArgs This is the main arguments array.
+     */
+    public static void main(final String[] theArgs) {
+        new PowerPaint();
+  
+    }
+
+}

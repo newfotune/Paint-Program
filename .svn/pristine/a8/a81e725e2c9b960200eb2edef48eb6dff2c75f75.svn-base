@@ -1,0 +1,125 @@
+
+package listeners;
+
+import java.awt.Shape;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.Icon;
+
+import view.CanvasPanel;
+import model.DrawingTool;
+import model.DrawnShapes;
+
+public class ToolsAction extends AbstractAction {
+
+    /** The name of my action. */
+    private final String myActionName;
+
+    /** My Drawing tool. */
+    private final DrawingTool myDrawingTool;
+    
+    /** */
+    private Shape myCurrentDrawing;
+    
+   // private CanvasPanel myPanel;
+    
+    private CanvasPanel myCanvas;
+
+    /**
+     * Constructs an action with the specified name and icon to set the panel to the specified
+     * color.
+     * 
+     * @param theName The name this is the name of my action.
+     * @param theIcon The icon this is my actions Icon.
+     * @param theTool this is my drawing tool.
+     */
+    public ToolsAction(final CanvasPanel theCanvas, final String theName, final Icon theIcon, final DrawingTool theTool) {
+
+        super(theName, theIcon);
+        myActionName = theName;
+        myDrawingTool = theTool;
+        myCanvas = theCanvas;
+        
+        final DrawingListener listener = new DrawingListener();
+        myCanvas.addMouseListener(listener);
+        myCanvas.addMouseMotionListener(listener);
+       
+        if (myDrawingTool.toString().equals("pencil"))
+        {
+          putValue(Action.SELECTED_KEY, true);
+          myCanvas.setMyTool(myDrawingTool);
+        }
+
+    }
+
+    /**
+     * choose the specified drawing tool.
+     * 
+     * @param theEvent The event, ignored.
+     */
+    @Override
+    public void actionPerformed(final ActionEvent theEvent) {
+        //putValue(Action.SELECTED_KEY, true);
+      
+        myCanvas.setMyTool(myDrawingTool);
+        myCanvas.setMyShape(myDrawingTool.getShape());
+        //myPanel.setToolColor(myColor);
+
+        //myFrame.add(myPanel);
+
+    }
+
+    public DrawingTool getTool() {
+        return myDrawingTool;
+    }
+
+    public String toString() {
+        return myActionName;
+    }
+
+    public class DrawingListener extends MouseAdapter {
+        /**
+         * This method determines where the line was dragged to.
+         * 
+         * @param theEvent This is the even passed.
+         */
+        @Override
+        public void mouseDragged(final MouseEvent theEvent) {
+            
+            if (myDrawingTool.toString().equals(myCanvas.getMyTool().toString()))  {
+                myCurrentDrawing = myDrawingTool.endingPoint(theEvent.getX(),
+                                                             theEvent.getY());
+
+                myCanvas.repaint();
+            }
+        }
+
+        @Override
+        public void mousePressed(final MouseEvent theEvent) {
+            // System.out.println("MousePressed");
+            myCanvas.setSomethingDrawn(true);
+            
+            if (myDrawingTool.toString().equals(myCanvas.getMyTool().toString())) {
+                myCurrentDrawing = myDrawingTool.startingPoint(theEvent.getX(),
+                                                               theEvent.getY());
+
+                myCanvas.repaint();
+                
+            }
+        }
+
+        @Override
+        public void mouseReleased(final MouseEvent theEvent) {
+            if (myDrawingTool.toString().equals(myCanvas.getMyTool().toString())) {
+                myCanvas.addOldShape(myCurrentDrawing);
+                myCurrentDrawing = myDrawingTool.finalPoint(theEvent.getX(),
+                                                               theEvent.getY());
+                myCanvas.repaint();
+            }
+        }
+    }
+}

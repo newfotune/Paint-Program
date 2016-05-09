@@ -1,0 +1,28 @@
+package listeners;
+
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+
+import view.CanvasPanel;
+
+public class GridListener extends AbstractAction{
+
+    private CanvasPanel myCanvas;
+    private boolean myGridSelected;
+    
+    public GridListener(final CanvasPanel theCanvas, boolean theCheckBoxChosen) {
+        
+        myCanvas = theCanvas;
+        myGridSelected = theCheckBoxChosen;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) { 
+        System.out.println(myGridSelected);
+        myCanvas.setGridSelected(myGridSelected);
+      
+        
+    }
+
+}

@@ -1,0 +1,211 @@
+
+package view;
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.RenderingHints;
+import java.awt.Shape;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Line2D;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JPanel;
+
+import listeners.ToolsAction.DrawingListener;
+import model.AbstractTool;
+import model.DrawingTool;
+import model.DrawnShapes;
+import model.LineTool;
+import model.PencilTool;
+import model.RectangleTool;
+import model.Rectangular;
+
+/**
+ * 
+ * @author Pwoke
+ *
+ */
+public class CanvasPanel extends JPanel {
+
+    /** The default width of the frame. */
+    public static final int DEFAULT_WIDTH = 400;
+
+    /** The default height of the frame. */
+    public static final int DEFAULT_HEIGHT = 200;
+
+    /** */
+    private Shape myCurrentDrawing;
+
+    /** */
+    private DrawingTool myDrawingTool;
+
+    /** */
+    private boolean somethingDrawn;
+
+    private final DrawingTool myDefaultTool;
+
+    private boolean myGridSelected;
+
+    private Color myColor;
+
+    private List<DrawnShapes> myOldShapes;
+    private int MY_GRID_START = 5;
+
+    private float myThickness;
+
+    /**
+     * This paints my home screen panel.
+     */
+    public CanvasPanel() {
+        super();
+//        final DrawingListener listener = new DrawingListener();
+//
+//        addMouseListener(listener);
+//        addMouseMotionListener(listener);
+
+        setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+
+        myDefaultTool = new PencilTool();
+        myColor = Color.BLACK;
+
+        myOldShapes = new ArrayList<>();
+        myDrawingTool = myDefaultTool;
+//        myDrawingTool = new RectangleTool();
+//        myCurrentDrawing = myDefaultTool.getShape();
+        
+        //myDrawingTool = 
+        myThickness = 1f;
+
+    }
+
+    @Override
+    public void paintComponent(final Graphics theGraphics) {
+
+        super.paintComponent(theGraphics);
+        final Graphics2D g2d = (Graphics2D) theGraphics;
+
+        // for better graphics display
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                             RenderingHints.VALUE_ANTIALIAS_ON);
+
+        for (int i = 0; i < myOldShapes.size(); i++) {
+            g2d.setColor(myOldShapes.get(i).getColor());
+            // System.out.println(myOldShapes.get(i).getShape());
+            g2d.setStroke(new BasicStroke(myOldShapes.get(i).getThickness()));
+            g2d.draw(myOldShapes.get(i).getShape());
+        }
+
+        if (myGridSelected) {
+            int startX = MY_GRID_START;
+            int startY = 0;
+            final Line2D myGrid = new Line2D.Double();
+
+            for (int j = 0; j < getWidth() / MY_GRID_START * 2; j++) {
+                myGrid.setLine(startX, startY, startX, getHeight());
+                g2d.setColor(Color.BLACK);
+                g2d.setStroke(new BasicStroke(1f));
+                g2d.draw(myGrid);
+                startX += MY_GRID_START * 2;
+            }
+
+            startX = 0;
+            startY = MY_GRID_START;
+            for (int i = 0; i < getHeight() / MY_GRID_START * 2; i++) {
+
+                myGrid.setLine(startX, startY, getWidth(), startY);
+                g2d.setColor(Color.BLACK);
+                g2d.draw(myGrid);
+
+                startY += MY_GRID_START * 2;
+            }
+        }
+
+        if (somethingDrawn) {
+            
+            g2d.setColor(myColor);
+            g2d.setStroke(new BasicStroke(myThickness));
+            // System.out.println(g2d.getStroke().toString());
+            //g2d.draw(myCurrentDrawing);
+            g2d.draw(myDrawingTool.getShape());
+
+        }
+    }
+
+    /**
+     * Gets the particular tool selected.
+     * 
+     * @param theCurrentDrawingTool the tool used in drawing.
+     */
+    public void setMyTool(final DrawingTool theDrawingTool) {
+        myDrawingTool = theDrawingTool;
+
+    }
+    
+    public DrawingTool getMyTool() {
+        return myDrawingTool;
+    }
+
+    public void setToolColor(final Color theColor) {
+        myColor = theColor;
+    }
+
+    /**
+     * Removes all the drawings from the panel.
+     */
+    public void removeAllDrawings() {
+        myOldShapes.clear();
+    }
+
+    /**.
+     * *****************.;
+     */
+    public void setSomethingDrawn(final boolean theDrawn) {
+        somethingDrawn = true;
+    }
+    
+
+    /**.
+     * *****************.;
+     */
+    public void setColor(final Color theColor) {
+        myColor = theColor;
+    }
+
+    /**.
+     * *****************.;
+     */
+    public void setGridSelected(final boolean theGridSelected) {
+        myGridSelected = theGridSelected;
+    }
+
+    /**.
+     * *****************.;
+     */
+    public void setThickness(final float theNewThickness) {
+        myThickness = theNewThickness;
+    }
+
+    /**.
+     * *****************.;
+     * @param theCurrentShape the shape being added to the arrayList of old shapes.
+     */
+    public void addOldShape(final Shape theCurrentShape) {
+        // myOldShapes.add(new DrawnShapes(myCurrentDrawing, myColor, 6));
+        myOldShapes.add(new DrawnShapes(theCurrentShape, myColor, myThickness));
+    }
+
+    /**.
+     * *****************.;
+     * @return true if the array is empty and false other wise.
+     */
+    public boolean isEmpty() {
+
+        return myOldShapes.isEmpty();
+    }
+}

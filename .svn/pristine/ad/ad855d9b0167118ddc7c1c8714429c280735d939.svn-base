@@ -1,0 +1,131 @@
+
+package listeners;
+
+import java.awt.Shape;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.Icon;
+
+import view.CanvasPanel;
+import model.DrawingTool;
+import model.DrawnShapes;
+
+public class ToolsAction extends AbstractAction {
+
+    /** The name of my action. */
+    private final String myActionName;
+
+    /** My Drawing tool. */
+    private final DrawingTool myDrawingTool;
+    
+    /**My current shape. */
+    private Shape myCurrentDrawing;
+    
+   // private CanvasPanel myPanel;
+    /** My drawing canvas.*/
+    private final CanvasPanel myCanvas;
+
+    /**
+     * Constructs an action with the specified name and icon to set the panel to the specified
+     * color.
+     * 
+     * @param theCanvas this is the canvas to be drawn upon.
+     * @param theName The name this is the name of my action.
+     * @param theIcon The icon this is my actions Icon.
+     * @param theTool this is my drawing tool.
+     */
+    public ToolsAction(final CanvasPanel theCanvas, final String theName,
+                       final Icon theIcon, final DrawingTool theTool, final int theMnemonic) {
+
+        super(theName, theIcon);
+        myActionName = theName;
+        myDrawingTool = theTool;
+        myCurrentDrawing = myDrawingTool.getShape();
+        myCanvas = theCanvas;
+       
+        putValue(Action.SELECTED_KEY, true);
+        putValue(MNEMONIC_KEY, theMnemonic);
+        
+        final DrawingListener listener = new DrawingListener();
+        myCanvas.addMouseListener(listener);
+        myCanvas.addMouseMotionListener(listener);
+    }
+
+    /**
+     * choose the specified drawing tool.
+     * 
+     * @param theEvent The event, ignored.
+     */
+    @Override
+    public void actionPerformed(final ActionEvent theEvent) {
+        myCanvas.setMyTool(myDrawingTool);
+    }
+
+    /**
+     * This returns the current drawing tool.
+     * @return the drawing tool
+     */
+    public DrawingTool getTool() {
+        return myDrawingTool;
+    }
+
+    /**
+     * This returns the name of the action.
+     * @return the name of the action.
+     */
+    public String toString() {
+        return myActionName;
+    }
+
+    /**
+     * This is the Mouse listener class that handles mouse movement on the canvas.
+     * @author n4tunec@uw.edu
+     * @version winter 2015.
+     *
+     */
+    public class DrawingListener extends MouseAdapter {
+        /**
+         * This method determines where the line was dragged to.
+         * 
+         * @param theEvent This is the even passed.
+         */
+        @Override
+        public void mouseDragged(final MouseEvent theEvent) {
+            
+            if (myDrawingTool.toString().equals(myCanvas.getMyTool().toString()))  {
+                myCurrentDrawing = myDrawingTool.endingPoint(theEvent.getX(),
+                                                             theEvent.getY());
+
+                myCanvas.repaint();
+            }
+        }
+
+        @Override
+        public void mousePressed(final MouseEvent theEvent) {
+            // System.out.println("MousePressed");
+            myCanvas.setSomethingDrawn(true);
+            
+            if (myDrawingTool.toString().equals(myCanvas.getMyTool().toString())) {
+                myCurrentDrawing = myDrawingTool.startingPoint(theEvent.getX(),
+                                                               theEvent.getY());
+                myCanvas.repaint();
+                
+            }
+        }
+
+        @Override
+        public void mouseReleased(final MouseEvent theEvent) {
+            if (myDrawingTool.toString().equals(myCanvas.getMyTool().toString())) { 
+                myCanvas.addOldShape(myCurrentDrawing);
+               
+                myCurrentDrawing = myDrawingTool.finalPoint(theEvent.getX(),
+                                                            theEvent.getY());
+                myCanvas.repaint();
+            }
+        }
+    }
+}

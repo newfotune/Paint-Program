@@ -1,0 +1,26 @@
+package model;
+
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+
+import javax.swing.JComponent;
+
+public abstract class AbstractTool implements DrawingTool  {
+
+//    private int myStartX;
+//
+//    private int myStartY;
+//
+//    private int myEndX;
+//
+//    private int myEndY;
+//    
+    public AbstractTool() {//final int theX, final int theY, final int theWidth, final int theHeight) {
+
+    }
+    
+    public AbstractTool getType() {
+        return this;
+    }
+}

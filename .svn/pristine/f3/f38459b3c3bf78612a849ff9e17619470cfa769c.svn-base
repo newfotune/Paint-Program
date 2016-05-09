@@ -1,0 +1,32 @@
+package model;
+
+import java.awt.Color;
+import java.awt.Shape;
+
+public class DrawnShapes {
+
+    private Shape myShape;
+    
+    private Color myColor;
+    
+    private float myThickness;
+    
+    public DrawnShapes(final Shape theShape, final Color theColor, final float theThickness) {
+        myShape = theShape;
+        myColor = theColor;
+        myThickness = theThickness;
+    }
+    
+    public Shape getShape() {
+        return myShape;
+    }
+    
+    public Color getColor() {
+        return myColor;   
+    }
+    
+    public float getThickness() {
+        return myThickness;
+    }
+
+}

@@ -1,0 +1,38 @@
+
+package listeners;
+
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.ImageIcon;
+import javax.swing.JColorChooser;
+
+import view.CanvasPanel;
+
+public class ColorChooserListener extends AbstractAction {
+
+    // private int myIconSize;
+
+    private CanvasPanel myCanvas;
+
+    public ColorChooserListener(final CanvasPanel theCanvas) {
+
+//        super("Color...");// , new ImageIcon(new ColorRectangle(ICON_SIZE, ICON_SIZE,
+//                          // Color.BLACK)));
+
+        // putValue(Action.SHORT_DESCRIPTION, "Change the color of the ink.");
+        // putValue(Action.MNEMONIC_KEY, KeyEvent.VK_C);
+
+        myCanvas = theCanvas;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        final Color color = JColorChooser.showDialog(myCanvas, "Choose your Color",
+                                                                 Color.BLACK);
+        myCanvas.setColor(color);
+
+    }
+
+}
